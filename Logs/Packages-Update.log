@@ -62,3 +62,11 @@ Update Mode: updateDependencies
 
 The following packages were 已更新:
   com.unity.2d.pixel-perfect 从版本 4.0.1 到 5.0.1
+
+=== Thu Jun 16 16:23:41 2022
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.timeline from version 1.6.4 to 1.7.1
