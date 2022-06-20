@@ -21,7 +21,7 @@ public class RubyController : MonoBehaviour
 
     // animator
     Animator animator;
-    Vector2 lookDirection = new Vector2(1, 0);
+    Vector2 lookDirection = new Vector2(1, 0);  //用来保存以前移动的方向
     
     void Start()
     {
@@ -31,7 +31,7 @@ public class RubyController : MonoBehaviour
         invincibleTimer = 0;
     }
 
-    // Update is called once per frame
+    // Update 用来处理没帧的变化
     void Update()
     {
         horizontal = Input.GetAxis("Horizontal");
@@ -45,6 +45,11 @@ public class RubyController : MonoBehaviour
                 isInvincible = false;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Launch();
+        }
     }
 
     private void FixedUpdate()
@@ -53,10 +58,21 @@ public class RubyController : MonoBehaviour
 
         position.x = position.x + horizontal * Time.deltaTime * speed;
         position.y = position.y + vertical * Time.deltaTime * speed;
-
         Vector2 move = new Vector2(horizontal, vertical);
-        animator.SetFloat("Look X", horizontal);
-        animator.SetFloat("Look Y", vertical);
+
+        // 如果有移动，更新方向
+        if (!Mathf.Approximately(move.x, 0f) || !Mathf.Approximately(move.y, 0f))
+        {
+            lookDirection = move;
+
+            // Normalize()是为了把向量长度设为1
+            // 因为blend tree 中表示方向的参数值取值范围是-1.0到1.0，
+            // 一般用向量作为Animator要先归一化
+            lookDirection.Normalize();
+        }
+
+        animator.SetFloat("Look X", lookDirection.x);
+        animator.SetFloat("Look Y", lookDirection.y);
         animator.SetFloat("Speed", move.magnitude);
 
         // 引擎会检测是否能完成移动
@@ -71,12 +87,14 @@ public class RubyController : MonoBehaviour
             Quaternion.identity
             );
         Projectile projectile = projectileObject.GetComponent<Projectile>();
-        projectile.Launch(lookDirection, 300);
+        projectile.Launch(lookDirection, 600);
+
+        animator.SetTrigger("Launch");
     }
 
     public void ChangeHealth(int amount)
     {
-        // 受到上海的时候
+        // 受到伤害的时候
         if (amount < 0)
         {
             if (isInvincible)

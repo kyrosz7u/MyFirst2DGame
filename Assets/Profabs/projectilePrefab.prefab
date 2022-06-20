@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2290236365789208310}
   - component: {fileID: 2290236365789208305}
   - component: {fileID: 5389948369092040743}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: projectilePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,8 +28,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2290236365789208304}
   m_LocalRotation: {x: -0, y: 0.033065557, z: -0, w: 0.99945325}
-  m_LocalPosition: {x: -0.768, y: -0.19, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.6764, y: -0.1811, z: 0}
+  m_LocalScale: {x: 0.7487056, y: 1.0549724, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

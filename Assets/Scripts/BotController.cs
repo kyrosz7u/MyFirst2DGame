@@ -12,6 +12,7 @@ public class BotController : MonoBehaviour
 
     // states
     float timer;
+    bool broken= true;
 
     // position
     Rigidbody2D rigidbody2D;
@@ -38,6 +39,11 @@ public class BotController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!broken)
+        {
+            return;
+        }
+
         if (timer < 0)
         {
             timer = changeTime;
@@ -57,7 +63,11 @@ public class BotController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        if (!broken)
+        {
+            return;
+        }
+
         Vector2 position = transform.position;
 
         position.x = position.x + horizontal * Time.deltaTime * speed;
@@ -70,7 +80,7 @@ public class BotController : MonoBehaviour
 
         animator.SetFloat("MoveX", horizontal);
         animator.SetFloat("MoveY", vertical);
-        animator.SetFloat("Speed", move.magnitude);
+        //animator.SetFloat("Speed", move.magnitude);
 
         // 引擎会检测是否能完成移动
         rigidbody2D.MovePosition(position);
@@ -86,5 +96,11 @@ public class BotController : MonoBehaviour
         }
     }
 
+    public void Fix()
+    {
+        broken = false;
+        rigidbody2D.simulated = false;
+        animator.SetTrigger("Fixed");
+    }
 
 }

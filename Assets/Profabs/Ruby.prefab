@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3107796125724325753}
   - component: {fileID: 1974280513}
   - component: {fileID: -5893727664327440390}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Ruby
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,6 +103,7 @@ MonoBehaviour:
   speed: 2
   maxHealth: 5
   timeInvincible: 2
+  projectilePrefab: {fileID: 0}
 --- !u!61 &3107796125724325753
 BoxCollider2D:
   m_ObjectHideFlags: 0
