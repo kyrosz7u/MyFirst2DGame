@@ -22,11 +22,17 @@ public class RubyController : MonoBehaviour
     // animator
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);  //用来保存以前移动的方向
-    
+
+    // audio
+    AudioSource audioSource;
+    public AudioClip launchAudio;
+    public AudioClip damageAudio;
+
     void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         currentHealth = maxHealth;
         invincibleTimer = 0;
     }
@@ -49,6 +55,30 @@ public class RubyController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
             Launch();
+        }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            //参数1：射线投射的位置     参数2：投射方向
+            //参数3：投射距离          参数4：射线生效的层
+
+            // 加上Vector2.up * 0.2f是将射线的起点位置上移0.2，
+            // 这样更加真实
+            RaycastHit2D hit = Physics2D.Raycast(
+                rigidbody2D.position + Vector2.up * 0.2f,
+                lookDirection,
+                1.5f,
+                LayerMask.GetMask("NPC"));
+
+            if (hit.collider != null)
+            {
+                NonPlayerCharacter character = hit.collider.GetComponent<NonPlayerCharacter>();
+                if (character != null)
+                {
+                    character.DisplayDialog();
+                }
+                Debug.Log("Raycast has hit the object " + hit.collider.gameObject);
+            }
         }
     }
 
@@ -90,6 +120,7 @@ public class RubyController : MonoBehaviour
         projectile.Launch(lookDirection, 600);
 
         animator.SetTrigger("Launch");
+        PlaySound(launchAudio);
     }
 
     public void ChangeHealth(int amount)
@@ -103,13 +134,20 @@ public class RubyController : MonoBehaviour
             }
             isInvincible = true;
             invincibleTimer = timeInvincible;
+            PlaySound(damageAudio);
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         Debug.Log(currentHealth + "/" + maxHealth);
-
+        UIHealthBar.Instance.SetValue(currentHealth / (float)maxHealth);
     }
+
     public int getCurrentHealth()
     {
         return currentHealth;
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }
