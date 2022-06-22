@@ -13,6 +13,7 @@ public class RubyController : MonoBehaviour
     int currentHealth;
     bool isInvincible;
     float invincibleTimer;
+    int MoveState = 0;  // 0:Idle   1:Move
 
     // position
     Rigidbody2D rigidbody2D;
@@ -22,17 +23,22 @@ public class RubyController : MonoBehaviour
     // animator
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);  //用来保存以前移动的方向
-
+    
     // audio
     AudioSource audioSource;
     public AudioClip launchAudio;
     public AudioClip damageAudio;
+    public AudioClip moveAudio;
 
-    void Start()
+    private void Awake()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+    }
+
+    void Start()
+    {
         currentHealth = maxHealth;
         invincibleTimer = 0;
     }
@@ -99,6 +105,22 @@ public class RubyController : MonoBehaviour
             // 因为blend tree 中表示方向的参数值取值范围是-1.0到1.0，
             // 一般用向量作为Animator要先归一化
             lookDirection.Normalize();
+
+            if (MoveState == 0)
+            {
+                audioSource.clip = moveAudio;
+                audioSource.Play();
+                MoveState = 1;  // 切换状态
+            }
+            
+        }
+        else
+        {
+            if (MoveState == 1)
+            {
+                audioSource.Stop();
+                MoveState = 0;
+            }
         }
 
         animator.SetFloat("Look X", lookDirection.x);

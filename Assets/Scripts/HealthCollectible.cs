@@ -14,10 +14,10 @@ public class HealthCollectible : MonoBehaviour
             if(rubyController.getCurrentHealth()< rubyController.maxHealth)
             {
                 rubyController.ChangeHealth(1);
-                rubyController.PlaySound(collectedClip);
-                Destroy(gameObject);    // gameobject是当前游戏对象
             }
-            
+            rubyController.PlaySound(collectedClip);
+            Destroy(gameObject);    // gameobject是当前游戏对象
+
         }
     }
 }

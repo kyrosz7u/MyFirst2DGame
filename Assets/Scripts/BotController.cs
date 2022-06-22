@@ -7,8 +7,7 @@ public class BotController : MonoBehaviour
     public float speed=2.0f;
     public float xlimits=5.0f;
     public float ylimits = 5.0f;
-    public ParticleSystem smokeEffect;
-
+    
     float changeTime = 0.5f;
 
     // states
@@ -24,6 +23,10 @@ public class BotController : MonoBehaviour
 
     // animator
     Animator animator;
+    public ParticleSystem smokeEffect;
+
+    // audio
+    public AudioClip HittedAudio;
 
     void Start()
     {
@@ -101,8 +104,14 @@ public class BotController : MonoBehaviour
     {
         broken = false;
         rigidbody2D.simulated = false;
+
         animator.SetTrigger("Fixed");
         smokeEffect.Stop();
+        AudioSource audioSource = GetComponent<AudioSource>();
+
+        audioSource.Stop();
+        audioSource.PlayOneShot(HittedAudio);
+
     }
 
 }
